@@ -6,9 +6,10 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import xyz.ITMO.Exercise.model.enums.CarModel;
+import xyz.ITMO.Exercise.model.enums.CarStatusEnum;
+
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -26,10 +27,10 @@ public class Car {
     CarModel carModel;
 
     @Column(name = "year_of_manufacture")
-    LocalDate yearOfManufacture;
+    String yearOfManufacture;
 
     @Column(name = "maximum_load")
-    double maximumLoad;
+    Double maximumLoad;
 
     @CreationTimestamp
     @Column(name = "Created_date")
@@ -40,5 +41,13 @@ public class Car {
 
     @Column(name = "Deleted_date")
     LocalDateTime deletedAt;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    Driver driver;
+
+    String name;
+
+    @Enumerated(EnumType.STRING)
+    CarStatusEnum status = CarStatusEnum.CREATED;
 
 }

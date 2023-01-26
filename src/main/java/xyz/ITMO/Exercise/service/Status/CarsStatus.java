@@ -1,9 +1,10 @@
-package xyz.ITMO.Exercise.service;
+package xyz.ITMO.Exercise.service.Status;
 
 import xyz.ITMO.Exercise.model.dto.CarsDTORequest;
 import xyz.ITMO.Exercise.model.dto.CarsDTOResponse;
 
-public interface CarsService {
+public interface CarsStatus {
+
     CarsDTORequest create(CarsDTORequest carsDTORequest);
 
     CarsDTORequest update(CarsDTORequest carsDTORequest);

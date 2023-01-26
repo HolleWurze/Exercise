@@ -3,95 +3,73 @@ package xyz.ITMO.Exercise.service.Impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import xyz.ITMO.Exercise.model.dto.CarsDTORequest;
-import xyz.ITMO.Exercise.model.dto.DriverDTO;
-import xyz.ITMO.Exercise.model.entity.Car;
+import xyz.ITMO.Exercise.Exceptions.MyException;
+import xyz.ITMO.Exercise.model.dto.DriverDTORequest;
 import xyz.ITMO.Exercise.model.entity.Driver;
+import xyz.ITMO.Exercise.model.enums.DriverStatusEnum;
 import xyz.ITMO.Exercise.model.repository.DriverRepository;
+import xyz.ITMO.Exercise.service.CarsService;
 import xyz.ITMO.Exercise.service.DriverService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DriverServiceImpl implements DriverService {
 
+    private final CarsService carsService;
     private final DriverRepository driverRepository;
     private final ObjectMapper mapper;
     @Override
-    public DriverDTO createDriver(DriverDTO driverDTO) {
+    public DriverDTORequest createDriver(DriverDTORequest driverDTORequest) {
+        driverRepository.findByEmail(driverDTORequest.getEmail()).ifPresent(
+                h -> {
+                    throw new MyException("Пользователь с таким email уже существует", HttpStatus.BAD_REQUEST);
+                }
+        );
 
-       // Driver driver = new Driver();
-//        driver.setAge(driverDTO.getAge());
-//        driver.setFirstName(driverDTO.getFirstName());
-//        driver.setLastName(driverDTO.getLastName());
-//        driver.setGender(driverDTO.getGender());
+        Driver car = mapper.convertValue(driverDTORequest, Driver.class);
+        Driver save = driverRepository.save(car);
 
-        Driver driver = mapper.convertValue(driverDTO, Driver.class);
-
-        driver.setCreatedAt(LocalDateTime.now());
-
-        List<Car> cars = driverDTO.getCars()
-                .stream()
-                .map(c -> {
-                    Car car = new Car();
-                    car.setCarModel(c.getCarModel());
-                    car.setMaximumLoad(c.getMaximumLoad());
-                    try {
-                        car.setYearOfManufacture(LocalDate.parse(c.getYearOfManufacture()));
-                    } catch (Exception ex) {
-                        log.error(ex.getMessage());
-                        throw new RuntimeException(ex);
-                    }
-                    return car;
-                })
-                .collect(Collectors.toList());
-
-        driver.setCars(cars);
-
-        Driver entity = driverRepository.save(driver);
-
-        DriverDTO result = mapper.convertValue(entity, DriverDTO.class);
-        List<CarsDTORequest> carsDTORequest = entity.getCars()
-                .stream()
-                .map(c -> {
-                    CarsDTORequest carDTO = new CarsDTORequest();
-                    carDTO.setCarModel(c.getCarModel());
-                    carDTO.setMaximumLoad(c.getMaximumLoad());
-                    carDTO.setYearOfManufacture(String.valueOf(c.getYearOfManufacture()));
-                    return carDTO;
-                })
-                .collect(Collectors.toList());
-
-        result.setCars(carsDTORequest);
-
-
-        return result;
+        return mapper.convertValue(save, DriverDTORequest.class);
     }
 
     @Override
-    public DriverDTO update(DriverDTO userDTO) {
-        return null;
+    public DriverDTORequest update(DriverDTORequest driverDTORequest) {
+        Driver driver = getDriver(driverDTORequest.getFirstName());
+
+//        driver.setAge(driverDTORequest.getAge() == null ? driver.getAge() : driverDTORequest.getAge());
+//        driver.setGender(driverDTORequest.getGender() == null ? driver.getGender() : driverDTORequest.getGender());
+//        driver.setFirstName(driverDTORequest.getFirstName() == null ? driver.getFirstName() : driverDTORequest.getFirstName());
+//        driver.setLastName(driverDTORequest.getLastName() == null ? driver.getLastName() : driverDTORequest.getLastName());
+//        driver.setEmail(driverDTORequest.getEmail() == null ? driver.getEmail() : driverDTORequest.getEmail());
+//        driver.setCars(driverDTORequest.getEmail() == null ? driver.getEmail() : driverDTORequest.getEmail()); //!!! установка машин владельцу
+//        driver.setUpdatedAt(LocalDateTime.now());
+//        driver.setStatus(DriverStatusEnum.UPDATED);
+//
+        return null; //mapper.convertValue(driverRepository.save(driver), DriverDTORequest.class);
     }
 
     @Override
-    public DriverDTO get(String email) {
-        return null;
+    public DriverDTORequest get(String email) {
+        return mapper.convertValue(getDriver(email), DriverDTORequest.class);
     }
 
     @Override
     public void delete(String email) {
-
+        Driver driver = getDriver(email);
+        driver.setStatus(DriverStatusEnum.DELETED);
+        driver.setUpdatedAt(LocalDateTime.now());
+        driverRepository.save(driver);
     }
 
     @Override
-    public Driver getUser(String email) {
-        return null;
+    public Driver getDriver(String email) {
+        return driverRepository.findByEmail(email)
+                .orElseThrow(() -> new MyException("Пользователь с таким email не найден", HttpStatus.NOT_FOUND));
     }
 }

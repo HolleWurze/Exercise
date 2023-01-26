@@ -1,10 +1,9 @@
-package xyz.ITMO.Exercise.service;
+package xyz.ITMO.Exercise.service.Status;
 
 import xyz.ITMO.Exercise.model.dto.DriverDTORequest;
 import xyz.ITMO.Exercise.model.entity.Driver;
 
-public interface DriverService {
-
+public interface DriversStatus {
 
     DriverDTORequest createDriver(DriverDTORequest driverDTORequest);
 
@@ -15,6 +14,4 @@ public interface DriverService {
     void delete(String email);
 
     Driver getDriver(String email);
-
-
 }

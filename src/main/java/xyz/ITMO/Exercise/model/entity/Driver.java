@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
+import xyz.ITMO.Exercise.model.enums.CarStatusEnum;
+import xyz.ITMO.Exercise.model.enums.DriverStatusEnum;
 import xyz.ITMO.Exercise.model.enums.Gender;
 
 import javax.persistence.*;
@@ -48,5 +50,8 @@ public class Driver {
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Car> cars;
+
+    @Enumerated(EnumType.STRING)
+    DriverStatusEnum status = DriverStatusEnum.CREATED;
 
 }

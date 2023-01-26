@@ -21,6 +21,6 @@ public interface CarsRepository extends JpaRepository<Car, Long> {
     List<Car> getCars(@Param("Model") CarModel carModel);
 
     @Query(value = "select * from houses where houses.material = :material", nativeQuery = true)
-    List<Car> getCarsNative(@Param("material") CarModel carModel);
+    List<Car> getCarsNative(@Param("Model") CarModel carModel);
 
 }

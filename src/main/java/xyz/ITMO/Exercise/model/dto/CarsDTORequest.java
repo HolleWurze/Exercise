@@ -11,6 +11,9 @@ public class CarsDTORequest {
 
     CarModel carModel;
     String yearOfManufacture; // используем string, чтобы исключить проблемы при спуске с фронта даты
-    double maximumLoad;
+    Double maximumLoad;
+    String name;
+
+
 
 }
