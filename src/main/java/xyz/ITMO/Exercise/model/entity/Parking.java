@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-import xyz.ITMO.Exercise.model.enums.CarModel;
 import xyz.ITMO.Exercise.model.enums.EnumCarStatus;
-
+import xyz.ITMO.Exercise.model.enums.EnumParkingStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,22 +14,22 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "cars")
+@Table(name = "parking")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Car {
+public class Parking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "model") //все в нижний регистр
-    CarModel carModel;
+    @Column(name = "number_of_parking_space")
+    Integer numberOfParkingSpace;
 
-    @Column(name = "year_of_manufacture")
-    String yearOfManufacture;
+    @Column(name = "working_hours")
+    String workingHours;
 
-    @Column(name = "maximum_load")
-    Double maximumLoad;
+    @Column(name = "address_parking")
+    String addressParking;
 
     @CreationTimestamp
     @Column(name = "created_date")
@@ -43,11 +42,8 @@ public class Car {
     LocalDateTime deletedAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    Driver driver;
-
-    String name;
+    Car car;
 
     @Enumerated(EnumType.STRING)
-    EnumCarStatus status = EnumCarStatus.CREATED;
-
+    EnumParkingStatus status = EnumParkingStatus.CREATED;
 }

@@ -18,9 +18,9 @@ public interface CarsRepository extends JpaRepository<Car, Long> {
     List<Car> findAllByModel(CarModel carModel);
 
     @Query("select car from Car car where car.carModel = :carModel")
-    List<Car> getCars(@Param("Model") CarModel carModel);
+    List<Car> getCars(@Param("model") CarModel carModel);
 
-    @Query(value = "select * from houses where houses.material = :material", nativeQuery = true)
-    List<Car> getCarsNative(@Param("Model") CarModel carModel);
+    @Query(value = "select * from car where car.yearOfManufacture = :yearOfManufacture", nativeQuery = true)
+    List<Car> getCarsNative(@Param("yearOfManufacture") CarModel carModel);
 
 }

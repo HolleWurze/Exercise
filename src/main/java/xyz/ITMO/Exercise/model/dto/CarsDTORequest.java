@@ -14,6 +14,4 @@ public class CarsDTORequest {
     Double maximumLoad;
     String name;
 
-
-
 }

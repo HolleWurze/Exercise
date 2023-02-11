@@ -1,6 +1,6 @@
 package xyz.ITMO.Exercise.model.enums;
 
-public enum DriverStatusEnum {
+public enum EnumDriverStatus {
 
     CREATED,
     UPDATED,

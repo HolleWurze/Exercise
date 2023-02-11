@@ -1,9 +1,10 @@
 package xyz.ITMO.Exercise.model.enums;
 
-public enum CarStatusEnum {
+public enum EnumParkingStatus {
 
     CREATED,
     UPDATED,
-    DELETED
-
+    DELETED,
+    ISFULL,
+    ISEMPTY
 }

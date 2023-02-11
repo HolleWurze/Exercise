@@ -8,7 +8,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DriverDTOResponse extends DriverDTORequest{
+
+public class ParkingDTOResponse extends ParkingDTORequest{
 
     CarsDTORequest carsDTORequest;
 }

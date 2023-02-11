@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
-import xyz.ITMO.Exercise.model.enums.CarStatusEnum;
-import xyz.ITMO.Exercise.model.enums.DriverStatusEnum;
+import xyz.ITMO.Exercise.model.enums.EnumDriverStatus;
 import xyz.ITMO.Exercise.model.enums.Gender;
 
 import javax.persistence.*;
@@ -26,10 +25,10 @@ public class Driver {
 
     Integer age;
 
-    @Column(name = "first_Name")
+    @Column(name = "first_name")
     String firstName;
 
-    @Column(name = "last_Name")
+    @Column(name = "last_name")
     String lastName;
 
     @Column(unique = true)
@@ -39,19 +38,16 @@ public class Driver {
     Gender gender;
 
     @CreationTimestamp
-    @Column(name = "Created_date",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
+    @Column(name = "created_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     LocalDateTime createdAt;
 
-    @Column(name = "Updated_date",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "updated_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     LocalDateTime updatedAt;
-
-    @Column(name = "Deleted_date",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
-    LocalDateTime deletedAt;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Car> cars;
 
     @Enumerated(EnumType.STRING)
-    DriverStatusEnum status = DriverStatusEnum.CREATED;
+    EnumDriverStatus status = EnumDriverStatus.CREATED;
 
 }
